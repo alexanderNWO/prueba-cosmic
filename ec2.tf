@@ -29,7 +29,7 @@ resource "aws_security_group" "sg_public_instances_cosmic_armenta" {
 resource "aws_instance" "cosmic_armenta_docker_instance" {
   ami                    = var.ec2_specs.ami
   instance_type          = var.ec2_specs.instance_type
-  subnet_id              = aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.public_subnet_1.id
   key_name               = "cosmic-armenta"
   vpc_security_group_ids = [aws_security_group.sg_public_instances_cosmic_armenta.id]
   root_block_device {

@@ -48,3 +48,8 @@ variable "rds_admin_password" {
   description = "RDS admin password"
   type        = string
 }
+
+variable "key_pair_name" {
+  description = "Nombre de la llave para ingresar a instancia por ssh"
+  type        = string
+}
