@@ -83,7 +83,7 @@ module "acm_request_certificate" {
   source = "cloudposse/acm-request-certificate/aws"
   # Cloud Posse recommends pinning every module to a specific version
   version                           = "0.17.0"
-  domain_name                       = "prueba.noticiasultimahora.mx"
+  domain_name                       = var.acm_domain_name
   process_domain_validation_options = true
   ttl                               = "300"
 }
@@ -92,8 +92,8 @@ module "production_www" {
   source = "cloudposse/route53-alias/aws"
   # Cloud Posse recommends pinning every module to a specific version
   version          = "0.13.0"
-  aliases          = ["prueba.noticiasultimahora.mx"]
-  parent_zone_name = "noticiasultimahora.mx"
+  aliases          = var.aliases_lb_route53
+  parent_zone_name = var.hosted_zone_name
   target_dns_name  = aws_lb.LB_Cosmic_Armenta.dns_name
   target_zone_id   = aws_lb.LB_Cosmic_Armenta.zone_id
 }

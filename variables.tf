@@ -53,3 +53,18 @@ variable "key_pair_name" {
   description = "Nombre de la llave para ingresar a instancia por ssh"
   type        = string
 }
+
+variable "acm_domain_name" {
+  description = "Nombre del dominio para el certificado ACM"
+  type        = string
+}
+
+variable "aliases_lb_route53" {
+  description = "Lista de alias para direccionamiento a un dns"
+  type        = list(string)
+}
+
+variable "hosted_zone_name" {
+  description = "Nombre de zona de hosting para route 53"
+  type        = string
+}
