@@ -28,7 +28,7 @@ resource "aws_lb" "LB_Cosmic_Armenta" {
   }
 }
 
-resource "aws_lb_listener" "LBListener_Cosmic_Armenta_HTTP_LOCAL" {
+resource "aws_lb_listener" "LBListener_Cosmic_Armenta_HTTP" {
   load_balancer_arn = aws_lb.LB_Cosmic_Armenta.arn
   port              = "80"
   protocol          = "HTTP"
