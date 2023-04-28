@@ -38,7 +38,7 @@ resource "aws_instance" "cosmic_armenta_docker_instance" {
     volume_size           = 10
     volume_type           = "gp3"
   }
-  user_data = file("scripts/userdata.sh")
+  user_data = data.template_file.init.rendered
 
   tags = {
     "Name" = "Instancia publica - ${local.sufix}"

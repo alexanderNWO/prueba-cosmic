@@ -1,14 +1,27 @@
-resource "aws_lb_target_group" "TG_Cosmic_Armenta" {
-  name     = "TGCosmicArmenta"
+resource "aws_lb_target_group" "TG_Cosmic_Armenta_Front" {
+  name     = "TGCosmicArmentaFront"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_cosmic_armenta_virginia.id
 }
 
-resource "aws_lb_target_group_attachment" "TGA_Cosmic_Armenta" {
-  target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta.arn
+resource "aws_lb_target_group_attachment" "TGA_Cosmic_Armenta_Front" {
+  target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta_Front.arn
   target_id        = aws_instance.cosmic_armenta_docker_instance.id
   port             = 8080
+}
+
+resource "aws_lb_target_group" "TG_Cosmic_Armenta_Backend" {
+  name     = "TGCosmicArmentaBack"
+  port     = 1667
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc_cosmic_armenta_virginia.id
+}
+
+resource "aws_lb_target_group_attachment" "TGA_Cosmic_Armenta_Backend" {
+  target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta_Backend.arn
+  target_id        = aws_instance.cosmic_armenta_docker_instance.id
+  port             = 1667
 }
 
 resource "aws_lb" "LB_Cosmic_Armenta" {
@@ -33,7 +46,7 @@ resource "aws_lb_listener" "LBListener_Cosmic_Armenta_HTTP" {
   port              = "80"
   protocol          = "HTTP"
   depends_on = [
-    aws_lb_target_group.TG_Cosmic_Armenta
+    aws_lb_target_group.TG_Cosmic_Armenta_Front
   ]
 
   default_action {
@@ -53,11 +66,27 @@ resource "aws_lb_listener" "LBListener_Cosmic_Armenta_HTTPS" {
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = module.acm_request_certificate.arn
   depends_on = [
-    aws_lb_target_group.TG_Cosmic_Armenta
+    aws_lb_target_group.TG_Cosmic_Armenta_Front
   ]
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta.arn
+    target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta_Front.arn
+  }
+}
+
+resource "aws_lb_listener" "LBListener_Cosmic_Armenta_HTTPS_Backend" {
+  load_balancer_arn = aws_lb.LB_Cosmic_Armenta.arn
+  port              = "1667"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = module.acm_request_certificate.arn
+  depends_on = [
+    aws_lb_target_group.TG_Cosmic_Armenta_Backend
+  ]
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.TG_Cosmic_Armenta_Backend.arn
   }
 }

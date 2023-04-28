@@ -72,6 +72,7 @@ module "rds_postgres" {
   source             = "./modules/rds"
   rds_admin_username = var.rds_admin_username
   rds_admin_password = var.rds_admin_password
+  rds_database_name  = var.rds_database_name
 }
 
 module "ec2_key_pair" {

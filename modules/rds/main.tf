@@ -12,7 +12,7 @@ resource "aws_security_group" "cosmic_armenta_rds_sg" {
 
 resource "aws_db_instance" "cosmic_armenta_rds" {
   allocated_storage    = 10
-  db_name              = "cosmicarmentadb"
+  db_name              = var.rds_database_name
   identifier           = "cosmic-armenta-db" 
   engine               = "postgres"
   engine_version       = "11.19"

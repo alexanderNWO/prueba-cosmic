@@ -49,6 +49,11 @@ variable "rds_admin_password" {
   type        = string
 }
 
+variable "rds_database_name" {
+  description = "RDS postgres database name"
+  type        = string
+}
+
 variable "key_pair_name" {
   description = "Nombre de la llave para ingresar a instancia por ssh"
   type        = string

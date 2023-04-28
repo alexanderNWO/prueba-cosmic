@@ -19,6 +19,15 @@ cd /home/ubuntu/
 service docker start
 git clone https://github.com/jjchiw/deno-drash-realworld-example-app.git
 cd deno-drash-realworld-example-app/
+rm src/.env
+printf "DB_USER=${db_user}
+DB_PASSWORD=${db_password}
+DB_DATABASE=${db_database}
+DB_HOSTNAME=${db_hostname}
+DB_PORT=${db_port}
+DB_ENABLE_TLS=false
+VUE_APP_API_URL=${vue_app_url}:1667
+" > /home/ubuntu/deno-drash-realworld-example-app/src/.env
 docker compose build && docker compose up -d
 docker compose exec drash bash
 /root/.deno/bin/nessie migrate
